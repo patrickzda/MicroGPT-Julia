@@ -449,4 +449,38 @@ end
             @test ours[1] ≈ refs[1]
         end
     end
+
+    # The tape records non-leaf nodes during the forward pass so backward! can walk it flat instead of recursing through the graph. Both paths are used in practice (train!'s use_tape flag), so they must agree exactly.
+    @testset "Tape-based backward (record!)" begin
+        a = [1.0, 2.0, -1.0]
+        b = [1.0 0.5 2.0; 0.0 1.0 1.0; 0.5 0.5 0.5]
+        build(x, y) = sum(relu(linear(rmsnorm(x), y)) + x)
+
+        # Reference gradients via the recursive (no-tape) walk
+        ar, br = AValue(copy(a)), AValue(copy(b))
+        backward!(build(ar, br))
+
+        # Same graph recorded on a tape
+        at, bt = AValue(copy(a)), AValue(copy(b))
+        local out
+        tape = MicroGPT.record!(() -> (out = build(at, bt)))
+        @test !isempty(tape)
+        @test last(tape) === out                    # loss is the last recorded node
+        @test all(n -> !isempty(n.parents), tape)   # leaves are not recorded
+        backward!(out, tape)
+
+        @test at.grad ≈ ar.grad
+        @test bt.grad ≈ br.grad
+
+        # Recording stops when record! returns: nodes created afterwards must not be appended to the returned tape.
+        len = length(tape)
+        _ = AValue([1.0]) + AValue([2.0])
+        @test length(tape) == len
+
+        # The tape is restored (recording stays off) even if the forward errors.
+        @test_throws DimensionMismatch MicroGPT.record!(
+            () -> AValue([1.0]) + AValue([1.0, 2.0]))
+        len2 = length(MicroGPT.record!(() -> AValue([1.0]) + AValue([2.0])))
+        @test len2 == 1
+    end
 end

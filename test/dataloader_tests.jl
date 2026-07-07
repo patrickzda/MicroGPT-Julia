@@ -1,5 +1,6 @@
 using Test
 using MicroGPT
+using Random: Xoshiro
 
 @testset "Dataloader.jl" begin
     # Work in a scratch directory so the files created here (input.txt,
@@ -33,7 +34,8 @@ using MicroGPT
                 end
 
                 @testset "doc content" begin
-                    @test doc_noshuffle != doc # test if order of values is different after shuffling
+                    # Shuffling must permute the documents, not add/drop/alter any
+                    @test sort(doc) == sort(doc_noshuffle)
                     @test readlines("input.txt") == doc_noshuffle # test if the order and content of elements is the same as in the textfile (knowing that the dataset contains no whitespaces or \n)
                     @test readlines("oneline.txt") == doc_oneline # test the same with one line
                 end
@@ -42,6 +44,14 @@ using MicroGPT
                     @test all(s -> length(s) > 0, doc)         # test if there are empty strings
                     @test all(s -> s == strip(s), doc)         # test if there are whitespaces in strings
                     @test all(s -> !occursin("\n", s), doc)    # test if there are linebreaks in strings
+                end
+
+                @testset "shuffling" begin
+                    # With a pinned RNG the shuffle is deterministic, so the order-change check cannot fail by coincidence.
+                    shuffled = load_data(rng=Xoshiro(42))
+                    @test shuffled == load_data(rng=Xoshiro(42))  # deterministic for equal seeds
+                    @test shuffled != doc_noshuffle               # and a real permutation of the file order
+                    @test sort(shuffled) == sort(doc_noshuffle)
                 end
 
                 @testset "repeated calls" begin

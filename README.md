@@ -112,7 +112,7 @@ Run the test by using `test` in package mode, and MicroGPT as active package.
 ```
 src/
   MicroGPT.jl    # module entry point, exports the public API
-  autograd.jl    # scalar reverse-mode autograd (Value, backward!, relu)
+  autograd.jl    # vector/matrix reverse-mode autograd (AValue, backward!, record!)
   dataloader.jl  # dataset loading (load_data)
   gpt.jl         # gpt model (layers, train, inference)
   optimizer.jl   # Adam optimizer
