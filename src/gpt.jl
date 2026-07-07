@@ -137,7 +137,7 @@ function train!(model::GPT, docs;
         # Forward the sequence, accumulating per-position cross-entropy losses.
         # Recording on the tape (when `use_tape`) makes `backward!` a flat
         # reverse walk instead of a recursive topological sort of the graph.
-        local loss
+        local loss = nothing
         forward = function ()
             keys, values = kv_cache(cfg), kv_cache(cfg)
             losses = AValue[]

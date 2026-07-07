@@ -34,6 +34,12 @@ end
         @test a.parents == ()
         # The leaf pullback ignores its argument and returns no parent grads.
         @test a.pullback_fn(a.grad) == ()
+
+        # Non-float (e.g. integer) arrays are converted to a float-backed AValue.
+        b = AValue([1, 2, 3])
+        @test b.data == [1.0, 2.0, 3.0]
+        @test eltype(b.data) <: AbstractFloat
+        @test b.grad == zeros(3)
     end
 
     # One testset per primitive operation, checking forward value and gradients against hardcoded expectations.
