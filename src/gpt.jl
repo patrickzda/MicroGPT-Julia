@@ -7,6 +7,8 @@
 
 Hyperparameters describing a GPT: vocabulary size, embedding width, number of
 attention heads, number of transformer layers and the maximum sequence length.
+
+All values must be positive and `n_embd` must be divisible by `n_head` otherwise an `ArgumentError` is thrown.
 """
 struct GPTConfig
     vocab_size::Int
@@ -14,6 +16,14 @@ struct GPTConfig
     n_head::Int
     n_layer::Int
     block_size::Int
+
+    function GPTConfig(vocab_size, n_embd, n_head, n_layer, block_size)
+        for (name, val) in (("vocab_size", vocab_size), ("n_embd", n_embd), ("n_head", n_head), ("n_layer", n_layer), ("block_size", block_size))
+            val > 0 || throw(ArgumentError("$name must be positive, got $val"))
+        end
+        n_embd % n_head == 0 || throw(ArgumentError("n_embd ($n_embd) must be divisible by n_head ($n_head)"))
+        return new(vocab_size, n_embd, n_head, n_layer, block_size)
+    end
 end
 
 GPTConfig(; vocab_size, n_embd, n_head, n_layer, block_size) =
@@ -120,11 +130,14 @@ per-position cross-entropy loss, then backpropagates with `backward!` and takes
 one Adam step.
 
 `use_tape` selects how `backward!` finds its topological order.
+
+Throws an `ArgumentError` if `docs` is empty.
 """
 function train!(model::GPT, docs;
     num_steps=1000, learning_rate=0.01,
     beta1=0.85, beta2=0.99, eps_adam=1e-8,
     use_tape=true, verbose=true)
+    isempty(docs) && throw(ArgumentError("docs must not be empty"))
     cfg = model.config
     tok = model.tokenizer
     opt = Adam(model.params; α=learning_rate, β1=beta1, β2=beta2, ϵ=eps_adam)
@@ -169,8 +182,11 @@ end
 
 Sample one sequence from `model` and decode it to a String, stopping at the BOS
 token or `block_size`. Probabilities come from one softmax `AValue` node.
+
+Throws an `ArgumentError` for zero or negative temperatures (the division by zero would otherwise produce NaN probabilities).
 """
 function generate(model::GPT; temperature=0.5)
+    temperature > 0 || throw(ArgumentError("temperature must be positive, got $temperature"))
     cfg = model.config
     tok = model.tokenizer
     BOS = tok.bos
