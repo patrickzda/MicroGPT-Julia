@@ -15,7 +15,7 @@ using Random: Xoshiro
                 println(f, "name")
             end
             @testset "Output" begin
-                doc, doc_empty, doc_noshuffle, doc_oneline = (load_data(), load_data("empty.txt"), load_data(shuffle=false), load_data("oneline.txt"))
+                doc, doc_empty, doc_noshuffle, doc_oneline = (load_data(), load_data("empty.txt"), load_data(do_shuffle=false), load_data("oneline.txt"))
 
                 @testset "empty path" begin
                     @test_throws SystemError load_data("") # Test if the function throws an error if the input path doesn't exist
@@ -55,7 +55,7 @@ using Random: Xoshiro
                 end
 
                 @testset "repeated calls" begin
-                    @test load_data(shuffle=false) == load_data(shuffle=false)    # test if the output is consistent with repeated calls
+                    @test load_data(do_shuffle=false) == load_data(do_shuffle=false)    # test if the output is consistent with repeated calls
                 end
             end
         end
