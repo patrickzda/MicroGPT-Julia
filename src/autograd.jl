@@ -471,7 +471,7 @@ function backward!(v::AValue, tape::Union{Nothing,Vector}=nothing)
         visited = IdSet{Any}()
 
         function build_topo(node)
-            if !(node.grad in visited) #--> Issue 26: Nicht auf gradient arrays überprüfen weil duplikate aufkommen können
+            if !(node.grad in visited) 
                 push!(visited, node.grad)
                 for parent in node.parents
                     build_topo(parent)
