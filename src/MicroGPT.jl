@@ -12,7 +12,7 @@ include("optimizer.jl")
 include("gpt.jl")
 
 export load_data, Tokenizer, encode, decode
-export AValue, backward!, relu
+export AValue, backward!, relu, record!
 export Adam, step!, zero_grad!
 export mul_elementwise, div_elementwise, pow_elementwise_scalar
 export linear, softmax, rmsnorm
