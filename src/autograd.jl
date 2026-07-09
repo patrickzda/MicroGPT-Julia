@@ -469,9 +469,10 @@ function backward!(v::AValue, tape::Union{Nothing,Vector}=nothing)
         # No tape: build a topological order by recursively walking the graph
         topo = Any[]
         visited = IdSet{Any}()
+        parents = IdSet{Any}()
 
         function build_topo(node)
-            if !(node.grad in visited)
+            if !(node.parents in parents) #--> Issue 26: Nicht auf gradient arrays überprüfen weil duplikate aufkommen können
                 push!(visited, node.grad)
                 for parent in node.parents
                     build_topo(parent)

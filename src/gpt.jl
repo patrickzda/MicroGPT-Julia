@@ -1,4 +1,4 @@
-# gpt.jl — a small GPT built on the vector/matrix`AValue` autograd engine
+# gpt.jl — a small GPT built on the scalar reverse-mode` autograd engine
 # (autograd.jl), the `Adam` optimizer (optimizer.jl), the `load_data` corpus
 # loader (dataloader.jl) and the character `Tokenizer` (tokenizer.jl).
 
