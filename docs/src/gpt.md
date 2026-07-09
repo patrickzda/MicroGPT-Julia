@@ -22,7 +22,7 @@ docs = ["emma", "olivia", "ava", "isabella", "sophia"]
 tok = Tokenizer(docs)
 
 config = GPTConfig(;
-    vocab_size=length(tok.uchars) + 1,
+    vocab_size=tok.vocab_size,
     n_embd=16,
     n_head=2,
     n_layer=2,

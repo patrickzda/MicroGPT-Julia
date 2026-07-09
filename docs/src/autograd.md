@@ -43,7 +43,7 @@ from the loss node it recursively walks the `parents` of each node to build a
 topological order, then replays the pullbacks in reverse. This works, but the
 recursive walk has to be redone on every backward pass.
 
-To avoid that, the engine can **record a tape**,a flat `Vector` of the nodes
+To avoid that, the engine can **record a tape**, a flat `Vector` of the nodes
 in the order they were created (which is already a valid topological order).
 Wrap the forward pass in [`record!`](@ref) to capture it:
 
@@ -53,12 +53,12 @@ using MicroGPT
 W = AValue([1.0 2.0; 3.0 4.0])
 x = AValue([5.0, 6.0])
 
-local loss
 tape = record!() do
     y = W * x
-    loss = sum(relu(y))
+    sum(relu(y))
 end
 
+loss = last(tape)   # the tape ends with the final node of the forward pass
 backward!(loss, tape)
 
 @show W.grad
@@ -70,9 +70,3 @@ Passing the recorded `tape` to [`backward!`](@ref) skips the recursive graph
 walk entirely: the reverse pass simply iterates the tape backwards and calls
 each node's pullback. This is what MicroGPT uses in its training loop, where the
 same graph shape is backpropagated many times.
-
-Internally, recording is controlled by a single task-global reference,
-`_TAPE`. While a tape is active, every non-leaf `AValue` constructed pushes
-itself onto the tape (leaf nodes, which have no parents, are skipped). Outside
-of [`record!`](@ref) the reference is `nothing`, so node construction has no
-overhead.

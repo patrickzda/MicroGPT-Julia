@@ -46,9 +46,7 @@ julia --project=@bench profiling/ad_benchmark.jl <path/to/autograd.jl> <label>
 | pass                        | min (µs) | median (µs) | mean (µs) | allocs | memory     |
 |-----------------------------|---------:|------------:|----------:|-------:|-----------:|
 | forward                     |   112.56 |      120.06 |    146.68 |    783 | 234.4 KiB  |
-| backward (recursive)        |   469.63 |      542.45 |    588.02 |    348 | 24.5 KiB   |
 | backward (tape)             |   394.63 |      455.22 |    491.00 |  **0** | **0 B**    |
-| total (fwd + bwd recursive) |   582.20 |      662.51 |    734.69 |   1131 | 258.9 KiB  |
 | total (fwd + bwd tape)      |   507.20 |      575.28 |    637.68 |    783 | 234.4 KiB  |
 
 ---
@@ -108,7 +106,7 @@ since the underlying autograd is the same).
 This is visible directly in the profiles. In the **`mul!`** graph above,
 `backward!` still spends a lot of its width in **`build_topo`**,
 re-computing the topological order of the graph on every backward call.
-In the **Tape** graph, that frame is gone entirel: ordering happens once in
+In the **Tape** graph, that frame is gone entirely: ordering happens once in
 `build_recorded` during the forward pass, and the backward replay is a flat loop
 over the tape with no traversal and no allocation:
 

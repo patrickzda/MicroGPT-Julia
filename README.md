@@ -4,7 +4,7 @@
 [![CI](https://github.com/patrickzda/MicroGPT.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/patrickzda/MicroGPT.jl/actions/workflows/CI.yml)
 [![Coverage](https://codecov.io/gh/patrickzda/MicroGPT.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/patrickzda/MicroGPT.jl)
 
-MicroGPT.jl is a minimal, educational character-level GPT in pure Julia, a
+MicroGPT.jl is a minimal, educational character-level GPT in pure Julia, comprising a
 vector/matrix reverse-mode autograd engine, a tokenizer, a dataset loader, an
 Adam optimizer, and the GPT model itself. Inspired by Andrej Karpathy's
 [microgpt](https://karpathy.github.io/2026/02/12/microgpt/).
@@ -96,6 +96,7 @@ src/
   tokenizer.jl   # character-level tokenizer (Tokenizer, encode, decode)
 test/            # test suite and fixtures, run via test/runtests.jl
 docs/            # documentation sources
+profiling/       # code for profiling / benchmark + results
 ```
 
 ## AI / LLM usage

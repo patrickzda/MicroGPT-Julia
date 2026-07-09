@@ -463,6 +463,9 @@ Pass the `tape` returned by [`record!`](@ref) (with `v` as its last node) to tak
 the flat reverse walk over it.
 """
 function backward!(v::AValue, tape::Union{Nothing,Vector}=nothing)
+    if tape !== nothing && !isempty(v.parents) && (isempty(tape) || last(tape) !== v)
+        throw(ArgumentError("tape must end with the last node `v`"))
+    end
     fill!(v.grad, one(eltype(v.grad)))
 
     if tape === nothing
