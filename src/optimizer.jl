@@ -9,10 +9,9 @@ Set the shared gradients of `opt` to zero.
 """
 function zero_grad!(opt::Optimizer)
     for p in opt.params
-        _zero_grad!(p)
+        fill!(p.grad, zero(eltype(p.grad)))  # AValue is immutable; zero the grad array in place
     end
 end
-_zero_grad!(p::AValue) = fill!(p.grad, zero(eltype(p.grad))) # Cannot assignt to immutable struct
 
 
 """

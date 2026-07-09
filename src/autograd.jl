@@ -71,10 +71,14 @@ function AValue(data::Real, grad::Real, parents::Tuple, pullback_fn::Function)
     return AValue(fill(float(data)), fill(float(grad)), parents, pullback_fn)
 end
 
+# Shared shape guard for the elementwise two-argument operations.
+function require_same_shape(a::AValue, b::AValue)
+    size(a.data) == size(b.data) ||
+        throw(DimensionMismatch("Both arguments must have the same shape."))
+end
+
 function +(a::AValue, b::AValue)
-    if size(a.data) != size(b.data)
-        throw(DimensionMismatch("Both arguments need the same shape."))
-    end
+    require_same_shape(a, b)
 
     output = a.data + b.data
 
@@ -105,9 +109,7 @@ function +(a::Real, b::AValue)
 end
 
 function -(a::AValue, b::AValue)
-    if size(a.data) != size(b.data)
-        throw(DimensionMismatch("Both arguments must have the same shape."))
-    end
+    require_same_shape(a, b)
 
     output = a.data - b.data
 
@@ -189,9 +191,7 @@ must be of same shape.
 Returns a new AValue type holding the elementwise multiplication.
 """
 function mul_elementwise(a::AValue, b::AValue)
-    if size(a.data) != size(b.data)
-        throw(DimensionMismatch("Both arguments must have the same shape."))
-    end
+    require_same_shape(a, b)
 
     output = a.data .* b.data
     return AValue(
@@ -225,9 +225,7 @@ must be of same shape.
 Returns a new AValue type holding the elementwise division.
 """
 function div_elementwise(a::AValue, b::AValue)
-    if size(a.data) != size(b.data)
-        throw(DimensionMismatch("Both arguments must have the same shape."))
-    end
+    require_same_shape(a, b)
 
     output = a.data ./ b.data
     return AValue(
@@ -473,7 +471,7 @@ function backward!(v::AValue, tape::Union{Nothing,Vector}=nothing)
         visited = IdSet{Any}()
 
         function build_topo(node)
-            if !(node.grad in visited)
+            if !(node.grad in visited) 
                 push!(visited, node.grad)
                 for parent in node.parents
                     build_topo(parent)

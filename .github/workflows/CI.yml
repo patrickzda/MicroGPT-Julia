@@ -10,6 +10,7 @@ on:
       - feedback-from-adrian
       - autograd-vec
       - model
+      - issue-fixing
     tags: ['*']
   pull_request:
   workflow_dispatch:

@@ -27,10 +27,10 @@ end
 
 save_model("model.jls", model) # Save the trained model
 println("\nSaved trained model to model.jls")
-new_model = load_model("model.jls")              # Load the trained model 
+new_model = load_model("model.jls")              # Load the trained model
 
 # Generate with the loaded model
-println("\nSamples:")
+println("\nSamples (loaded model):")
 for _ in 1:10
-    println("  ", generate(model; temperature=0.8))
+    println("  ", generate(new_model; temperature=0.8))
 end

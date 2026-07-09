@@ -9,13 +9,13 @@ whitespace stripped.
 If `path` does not exist, the names dataset is downloaded to `path` first. When
 `shuffle` is `true` the documents are shuffled in place using `rng`.
 """
-function load_data(path::String="input.txt"; shuffle::Bool=true, rng=default_rng())
+function load_data(path::String="input.txt"; do_shuffle::Bool=true, rng=default_rng())
     if !isfile(path)
         @debug "Downloading names dataset to $path ..."
         download(NAMES_URL, path)
     end
     docs = [String(strip(l)) for l in eachline(path) if !isempty(strip(l))]
-    shuffle && shuffle!(rng, docs)
+    do_shuffle && shuffle!(rng, docs)
     @debug "num docs: $(length(docs))"
     return docs
 end

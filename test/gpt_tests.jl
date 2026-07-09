@@ -9,6 +9,10 @@ using MicroGPT
         n_head=2, n_layer=2, block_size=16)
     model = GPT(cfg, tok)
 
+    # Invalid configurations are rejected early with a clear error
+    @test_throws ArgumentError GPTConfig(vocab_size=tok.vocab_size, n_embd=10, n_head=3, n_layer=1, block_size=16)   # n_embd not divisible by n_head
+    @test_throws ArgumentError GPTConfig(vocab_size=0, n_embd=8,  n_head=2, n_layer=1, block_size=16)   # non-positive field
+
     # Check the dimensions
     @test head_dim(cfg) == 4
     @test size(model.state_dict["wte"].data) == (cfg.vocab_size, cfg.n_embd)
@@ -23,9 +27,16 @@ using MicroGPT
     @test length(logits.data) == cfg.vocab_size
     @test all(isfinite, logits.data)
 
+    # Training on an empty corpus fails with a clear error
+    @test_throws ArgumentError train!(model, String[]; num_steps=1, verbose=false)
+
     # A few training steps
     train!(model, docs; num_steps=10, verbose=false)
     @test all(isfinite, model.state_dict["wte"].data)
+
+    # Non-positive temperatures are rejected
+    @test_throws ArgumentError generate(model; temperature=0.0)
+    @test_throws ArgumentError generate(model; temperature=-1.0)
 
     # generate returns a decodable String of at most block_size chars
     out = generate(model; temperature=0.5)
