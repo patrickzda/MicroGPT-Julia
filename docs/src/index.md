@@ -11,14 +11,3 @@ a vector/matrix reverse-mode autograd engine, a
 character-level tokenizer, a small dataset loader, an Adam optimizer, and the
 GPT model itself.
 
-## Getting started
-
-Install the package directly from GitHub (press `]` in the REPL to enter package
-mode):
-
-```julia
-pkg> add https://github.com/patrickzda/MicroGPT.jl
-```
-
-From here, see the [Tokenizer](@ref) and [Autograd](@ref) guides for usage
-examples, and the [API reference](@ref) for the full list of exported functions.
