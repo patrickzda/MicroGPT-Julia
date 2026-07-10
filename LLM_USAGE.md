@@ -19,4 +19,7 @@ LLMs and coding assistants were used for selected research, drafting, generation
 | Claude Code | GENERATION | optimizer_tests.jl | `adam_reference` test generation | No public transcript |
 | OpenAI Codex | DRAFTING | gpt.jl, gpt_tests.jl | Found dimension_mismatch error case | No public transcript |
 | OpenAI Codex | DRAFTING | LLM_USAGE.md | Partially helped compiling the project's LLM usage | No public transcript |
-| OpenAI Codex | DRAFTING | - | Used to review  | No public transcript |
+
+## Attribution scope
+
+The entries above document directly identifiable uses of LLMs and coding assistants. OpenAI Codex / Claude Code was additionally used for project-wide review after code review milestones. Suggestions from these review sessions were evaluated and, where appropriate and not otherwise stated, implemented manually by the authors.
