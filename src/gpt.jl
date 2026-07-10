@@ -62,6 +62,9 @@ parameter matrix is a single `AValue` node.
 function GPT(config::GPTConfig, tokenizer::Tokenizer; std=0.08)
     (; vocab_size, n_embd, n_layer, block_size) = config
 
+    vocab_size == tokenizer.vocab_size ||
+        throw(DimensionMismatch("vocab_size differs for config and tokenizer."))
+
     state_dict = Dict{String,AValue}(
         "wte" => param_matrix(vocab_size, n_embd, std),      # token embeddings
         "wpe" => param_matrix(block_size, n_embd, std),      # position embeddings

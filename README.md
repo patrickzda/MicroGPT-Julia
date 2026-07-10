@@ -13,8 +13,7 @@ Adam optimizer, and the GPT model itself. Inspired by Andrej Karpathy's
 
 ## Getting Started (as a User)
 
-Use this guide if you just want to install MicroGPT.jl and call it from your own
-code.
+Use this guide if you just want to install MicroGPT.jl and call it from your own code.
 
 ### Installation
 
@@ -25,34 +24,39 @@ package manager (press `]` in the Julia REPL to enter package mode):
 pkg> add https://github.com/patrickzda/MicroGPT.jl
 ```
 
-### Training a GPT
-
-The runnable [`run.jl`](run.jl) script at the project root trains a small
-character-level GPT on the names dataset, generates samples, and saves/loads the
-trained model. Run it with:
-
-```bash
-julia --project=. run.jl
-```
-
-For a step-by-step walkthrough of that script, see the
-[Getting started](https://patrickzda.github.io/MicroGPT.jl/dev/getting_started/)
-guide in the documentation.
-
-### Running the tests
-
-When MicroGPT.jl is installed as a package, run its test suite through the package manager:
+### Train your own model
 
 ```julia
-pkg> test MicroGPT
+using MicroGPT
+
+# Define a small training dataset
+docs = ["emma", "olivia", "ava", "isabella", "sophia"]
+
+# Instantiate the tokenizer
+tok = Tokenizer(docs)
+
+# Configure the MicroGPT model
+config = GPTConfig(;
+    vocab_size=tok.vocab_size,
+    n_embd=16,
+    n_head=2,
+    n_layer=2,
+    block_size=16,
+)
+
+# Instantiate the MicroGPT model
+model = GPT(config, tok)
+
+# Train the model
+train!(model, docs; num_steps=2000, learning_rate=0.01)
+
+# Generate 20 samples
+for _ in 1:20
+    println("  ", generate(model; temperature=0.5))
+end
 ```
 
-Or, equivalently, from a script or the REPL:
-
-```julia
-using Pkg
-Pkg.test("MicroGPT")
-```
+For further details, see the [GPT documentation](https://patrickzda.github.io/MicroGPT.jl/dev/gpt/).
 
 ## Getting Started (as a Developer)
 
@@ -75,14 +79,27 @@ pkg> activate .
 pkg> instantiate
 ```
 
-### Running the tests
+### Run the training example
 
-Run the test by using `test` in package mode, and MicroGPT as active package.
+The runnable [`run.jl`](run.jl) script at the project root trains a small
+character-level GPT on the names dataset, generates samples, and saves/loads the
+trained model. Run it with:
 
-```julia
-(MicroGPT) pkg> test
+```bash
+julia --project=. run.jl
 ```
 
+For a step-by-step walkthrough of that script, see the
+[Getting started](https://patrickzda.github.io/MicroGPT.jl/dev/getting_started/)
+guide in the documentation.
+
+### Run the tests
+
+Enter the following command inside the activated MicroGPT.jl project to run all available tests:
+
+```julia
+pkg> test
+```
 
 ### Project layout
 

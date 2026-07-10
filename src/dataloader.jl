@@ -1,7 +1,7 @@
 const NAMES_URL = "https://raw.githubusercontent.com/karpathy/makemore/refs/heads/master/names.txt"
 
 """
-    load_data(path="input.txt"; shuffle=true, rng=Random.default_rng()) -> Vector{String}
+    load_data(path="input.txt"; do_shuffle=true, rng=Random.default_rng()) -> Vector{String}
 
 Load a corpus of documents, one per non-empty line of `path`, with surrounding
 whitespace stripped.
