@@ -58,9 +58,16 @@ param_matrix(nout, nin, std=0.08) = AValue(randn(nout, nin) .* std)
 
 Build a fresh GPT with randomly initialised weights bound to `tokenizer`. Each
 parameter matrix is a single `AValue` node.
+
+`config.vocab_size` must equal `tokenizer.vocab_size`; otherwise a `DimensionMismatch` is thrown.
 """
+
+# The error case vocab_size != tokenizer.vocab_size was found and drafted with the help of an AI agent
 function GPT(config::GPTConfig, tokenizer::Tokenizer; std=0.08)
     (; vocab_size, n_embd, n_layer, block_size) = config
+
+    vocab_size == tokenizer.vocab_size ||
+        throw(DimensionMismatch("vocab_size differs for config and tokenizer."))
 
     state_dict = Dict{String,AValue}(
         "wte" => param_matrix(vocab_size, n_embd, std),      # token embeddings
