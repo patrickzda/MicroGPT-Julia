@@ -1,6 +1,8 @@
 using Test
 using MicroGPT
 
+# THE FOLLOWING TESTS ARE AI ASSISTED
+
 @testset "Tokenizer.jl" begin
     # Fixed input used across most testsets.
     # unique sorted chars of "hello"+"world" = ['d','e','h','l','o','r','w']

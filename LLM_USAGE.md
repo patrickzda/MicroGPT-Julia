@@ -17,6 +17,7 @@ LLMs and coding assistants were used for selected research, drafting, generation
 | ChatGPT | GENERATION | autograd.jl | Generated docstrings for `linear`, `softmax` and `rmsnorm` | https://chatgpt.com/share/6a3fcb2d-0ecc-83eb-9e40-c00c1661c295 |
 | ChatGPT | RESEARCH | autograd.jl | Calculated rmsnorm derivation | https://chatgpt.com/share/6a3d41a0-445c-83eb-ba53-876e591115d8 |
 | Claude Code | GENERATION | optimizer_tests.jl | `adam_reference` test generation | No public transcript |
+| Claude Code | DRAFTING | autograd_tests.jl, dataloader_tests.jl, tokenizer_tests.jl | Test Assistance and Bug fixing Assitance | No public transcript |
 | OpenAI Codex | DRAFTING | gpt.jl, gpt_tests.jl | Found dimension_mismatch error case | No public transcript |
 | OpenAI Codex | DRAFTING | LLM_USAGE.md | Partially helped compiling the project's LLM usage | No public transcript |
 

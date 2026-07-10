@@ -2,6 +2,8 @@ using Test
 using MicroGPT
 using Random: Xoshiro
 
+# THE FOLLOWING TESTS ARE AI ASSISTED
+
 @testset "Dataloader.jl" begin
     # Work in a scratch directory so the files created here (input.txt,
     # empty.txt, oneline.txt) don't accumulate in the repository.
