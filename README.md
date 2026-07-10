@@ -72,21 +72,24 @@ cd MicroGPT.jl
 
 ### Set up the environment
 
-Instantiate the package's dependencies from the checkout:
+From the repository root, start Julia with an activated project environment:
+
+```bash
+julia --project=.
+```
+
+Switch to package mode, then enter:
 
 ```julia
-pkg> activate .
 pkg> instantiate
 ```
 
 ### Run the training example
 
-The runnable [`run.jl`](run.jl) script at the project root trains a small
-character-level GPT on the names dataset, generates samples, and saves/loads the
-trained model. Run it with:
+The runnable [`run.jl`](run.jl) script at the project root trains a small character-level GPT on the names dataset, generates samples, and saves/loads the trained model. From the REPL, run it with:
 
-```bash
-julia --project=. run.jl
+```julia
+include("run.jl")
 ```
 
 For a step-by-step walkthrough of that script, see the
@@ -95,10 +98,20 @@ guide in the documentation.
 
 ### Run the tests
 
-Enter the following command inside the activated MicroGPT.jl project to run all available tests:
+Execute the following command from the package mode to run all available package tests:
 
 ```julia
 pkg> test
+```
+
+### Terminal-only alternative
+
+The steps above can also be performed without the interactive REPL:
+
+```bash
+julia --project=. -e 'using Pkg; Pkg.instantiate()' # Instantiate dependencies
+julia --project=. run.jl                            # Run example
+julia --project=. -e 'using Pkg; Pkg.test()'        # Run tests
 ```
 
 ### Project layout
@@ -129,3 +142,7 @@ The dataset of names used by `load_data` comes from Andrej Karpathy's
 [makemore](https://github.com/karpathy/makemore) project and is redistributed
 under the MIT License. A copy bundled with the test suite lives at
 `test/names.txt`, with the accompanying license at `test/names.LICENSE`.
+
+<!--
+Parts of this README were improved with the help of an AI assistant.
+-->
