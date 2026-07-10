@@ -23,7 +23,7 @@ LLMs and coding assistants were used for selected research, drafting, generation
 | Claude Code | GENERATION | autograd.jl | Refactored the `AValue` pullback | No public transcript |
 | Claude Code | GENERATION | gpt.jl | Generated `save_model` and `load_model` | No public transcript |
 | Claude Code | DRAFTING | gpt.jl | Drafted the GPT forward pass from the Python implementation | No public transcript |
-| Claude Code | GENERATION | (-) | Formatting throughout the document | No public transcript |
+| Claude Code | GENERATION | all | Formatting throughout the document | No public transcript |
 | Claude Code | GENERATION | ad_benchmark.jl, ad_profile.jl | Generated the commit-based autograd benchmark and profiler | No public transcript |
 
 ## Attribution scope
