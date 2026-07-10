@@ -87,4 +87,4 @@ To perform the benchmark on the commit with label 50cfaa2.
 
 [autograd_profiler_results.md](./results/autograd_profiler_results.md) contains the profiling for the **Scalar vs Vector** based Automatic Differentiation. 
 
-[autograd_benchmark.md](./results/autograd_benchmark.md) contains the benchmark and profiling result for different versions of the autograd. Showing the performane gains accross commits.
+[autograd_benchmark.md](./results/autograd_benchmark.md) contains the benchmark and profiling result for different versions of the autograd. Showing the performance gains across commits.

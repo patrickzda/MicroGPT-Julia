@@ -4,6 +4,11 @@
 [![CI](https://github.com/patrickzda/MicroGPT.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/patrickzda/MicroGPT.jl/actions/workflows/CI.yml)
 [![Coverage](https://codecov.io/gh/patrickzda/MicroGPT.jl/branch/main/graph/badge.svg)](https://codecov.io/gh/patrickzda/MicroGPT.jl)
 
+MicroGPT.jl is a minimal, educational character-level GPT in pure Julia, comprising a
+vector/matrix reverse-mode autograd engine, a tokenizer, a dataset loader, an
+Adam optimizer, and the GPT model itself. Inspired by Andrej Karpathy's
+[microgpt](https://karpathy.github.io/2026/02/12/microgpt/).
+
 **Requirements:** Julia 1.11
 
 ## Getting Started (as a User)
@@ -22,45 +27,17 @@ pkg> add https://github.com/patrickzda/MicroGPT.jl
 
 ### Training a GPT
 
-The snippet below trains a small character-level GPT on the names dataset,
-generates samples, and saves/loads the trained model. It is the same runnable
-[`run.jl`](run.jl) script at the project root, which you can execute with:
+The runnable [`run.jl`](run.jl) script at the project root trains a small
+character-level GPT on the names dataset, generates samples, and saves/loads the
+trained model. Run it with:
 
 ```bash
 julia --project=. run.jl
 ```
 
-```julia
-using MicroGPT
-
-# Load the dataset (downloads to `input.txt` on first run) and build a tokenizer
-docs = load_data("input.txt")
-tokenizer = Tokenizer(docs)
-println("num docs: $(length(docs)) | vocab size: $(tokenizer.vocab_size)")
-
-# Configure and create the model
-config = GPTConfig(
-    vocab_size = tokenizer.vocab_size,
-    n_embd     = 16,
-    n_head     = 4,
-    n_layer    = 1,
-    block_size = 16,
-)
-model = GPT(config, tokenizer)
-
-# Train
-train!(model, docs; num_steps = 2000, learning_rate = 0.01)
-
-# Generate some samples
-println("\nSamples:")
-for _ in 1:20
-    println("  ", generate(model; temperature = 0.8))
-end
-
-# Save and reload the trained model
-save_model("model.jls", model)
-new_model = load_model("model.jls")
-```
+For a step-by-step walkthrough of that script, see the
+[Getting started](https://patrickzda.github.io/MicroGPT.jl/dev/getting_started/)
+guide in the documentation.
 
 ### Running the tests
 
@@ -119,6 +96,7 @@ src/
   tokenizer.jl   # character-level tokenizer (Tokenizer, encode, decode)
 test/            # test suite and fixtures, run via test/runtests.jl
 docs/            # documentation sources
+profiling/       # code for profiling / benchmark + results
 ```
 
 ## AI / LLM usage

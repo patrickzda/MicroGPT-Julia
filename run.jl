@@ -22,7 +22,7 @@ train!(model, docs; num_steps=2000, learning_rate=0.01)
 
 println("\nSamples:")
 for _ in 1:20
-    println("  ", generate(model; temperature=0.8))
+    println("  ", generate(model; temperature=0.5))
 end
 
 save_model("model.jls", model) # Save the trained model
@@ -32,5 +32,5 @@ new_model = load_model("model.jls")              # Load the trained model
 # Generate with the loaded model
 println("\nSamples (loaded model):")
 for _ in 1:10
-    println("  ", generate(new_model; temperature=0.8))
+    println("  ", generate(new_model; temperature=0.5))
 end

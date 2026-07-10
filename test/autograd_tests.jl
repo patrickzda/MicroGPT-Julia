@@ -478,6 +478,11 @@ end
         @test at.grad ≈ ar.grad
         @test bt.grad ≈ br.grad
 
+        # A tape that does not end with the differentiated node is rejected
+        # instead of silently leaving all gradients zero.
+        @test_throws ArgumentError backward!(tape[1], tape)
+        @test_throws ArgumentError backward!(out, AValue[])
+
         # Recording stops when record! returns: nodes created afterwards must not be appended to the returned tape.
         len = length(tape)
         _ = AValue([1.0]) + AValue([2.0])

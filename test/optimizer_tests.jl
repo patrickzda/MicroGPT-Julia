@@ -19,13 +19,6 @@ function adam_reference(θ0, grads; α, β1, β2, ϵ)
     return θ
 end
 
-# Helper: set the .grad of each parameter from a plain gradient vector.
-set_grads!(params, g) =
-    for (p, gi) in zip(params, g)
-        ;
-        p.grad = gi;
-    end
-
 @testset "optimizer.jl" begin
     # Adam optimizes array-valued `AValue` parameters. We cross check against the
     # same reference, treating each array entry as an independent scalar parameter.

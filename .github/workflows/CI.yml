@@ -3,14 +3,7 @@ on:
   push:
     branches:
       - main
-      - autograd
-      - Adam
-      - dataloader-tokenizer
-      - cleanup-review-1
-      - feedback-from-adrian
-      - autograd-vec
-      - model
-      - issue-fixing
+      - docs
     tags: ['*']
   pull_request:
   workflow_dispatch:
