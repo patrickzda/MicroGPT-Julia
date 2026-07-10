@@ -2,6 +2,8 @@ using Test          # built-in testing library
 using MicroGPT      # our own package
 using ForwardDiff   # external comparison package
 
+# THE FOLLOWING TESTS ARE AI ASSISTED
+
 # Helper: run our function to get gradients
 function our_grads(build, arrays::AbstractArray...)
     leaves = [AValue(copy(a)) for a in arrays]

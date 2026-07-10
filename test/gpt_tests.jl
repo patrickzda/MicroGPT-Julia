@@ -11,7 +11,11 @@ using MicroGPT
 
     # Invalid configurations are rejected early with a clear error
     @test_throws ArgumentError GPTConfig(vocab_size=tok.vocab_size, n_embd=10, n_head=3, n_layer=1, block_size=16)   # n_embd not divisible by n_head
-    @test_throws ArgumentError GPTConfig(vocab_size=0, n_embd=8,  n_head=2, n_layer=1, block_size=16)   # non-positive field
+    @test_throws ArgumentError GPTConfig(vocab_size=tok.vocab_size, n_embd=8,  n_head=2, n_layer=0, block_size=16)   # non-positive field
+    
+    # The error case vocab_size != tokenizer.vocab_size was found and drafted with the help of an AI agent:
+    wrong_vocab_size_config = GPTConfig(vocab_size=tok.vocab_size + 1, n_embd=8, n_head=2, n_layer=2, block_size=16)
+    @test_throws DimensionMismatch GPT(wrong_vocab_size_config, tok) # Mismatch between config's and tokenizer's vocab_size
 
     # Check the dimensions
     @test head_dim(cfg) == 4
